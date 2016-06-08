@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <!--<LinearLayout-->
+        <!--android:id="@+id/top_head_container"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="50dip"-->
+        <!--android:background="@color/colorPrimaryDark"-->
+        <!--android:orientation="horizontal">-->
+
+        <!--<me.drakeet.uiview.UIImageView-->
+            <!--android:id="@+id/back_button"-->
+            <!--android:layout_width="40dip"-->
+            <!--android:layout_height="40dip"-->
+            <!--android:layout_marginTop="5dip"-->
+            <!--android:background="@android:drawable/ic_menu_revert"/>-->
+
+    <!--</LinearLayout>-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_margin="@dimen/ui_radius"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="头像"
+            android:textStyle="bold"
+            />
+    </LinearLayout>
+
+    <me.drakeet.uiview.UIButton
+        android:id="@+id/logout_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:alpha="20"
+        android:textColor="@color/red"
+        android:text="退出登录"
+        app:alpha_pressed="100"
+        />
+
+</LinearLayout>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:drakeet="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0pt"
+        android:layout_weight="4"
+        android:background="@drawable/background">
+
+        <me.drakeet.uiview.UIImageView
+            android:id="@+id/userpic"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/avatar2"
+            drakeet:shape_type="round"/>
+
+        <me.drakeet.uiview.UIButton
+            android:id="@+id/login_button"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/userpic"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="23dp"
+            android:background="@android:color/transparent"
+            android:text="登录"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:visibility="gone"/>
+
+
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/userpic"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="10dp"
+            android:text="username"
+            android:textColor="@color/white"/>
+
+        <TextView
+            android:id="@+id/personalized_signature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/username"
+            android:layout_centerHorizontal="true"
+            android:text="personalized_signature"
+            android:textColor="@color/papayawhip"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="6"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/launch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="发起签到"/>
+
+        <Button
+            android:id="@+id/response"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="我要签到"/>
+    </LinearLayout>
+</LinearLayout>
