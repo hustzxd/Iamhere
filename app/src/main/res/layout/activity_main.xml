@@ -71,5 +71,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="我要签到"/>
+
+        <Button
+            android:id="@+id/search1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="我发起的签到"/>
+
+        <Button
+            android:id="@+id/search2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="我的签到记录"/>
     </LinearLayout>
 </LinearLayout>

@@ -28,6 +28,9 @@ public class MainActivity extends Activity {
     private UIButton mLoginButton;
     private Button mLaunchButton;
     private Button mResponseButton;
+    private Button mSearchMyLaunch;
+    private Button mSearchCheckins;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +47,16 @@ public class MainActivity extends Activity {
         mLaunchButton = (Button) findViewById(R.id.launch);
         mResponseButton = (Button) findViewById(R.id.response);
         mResponseButton = (Button) findViewById(R.id.response);
+        mSearchCheckins = (Button) findViewById(R.id.search2);
+        mSearchMyLaunch = (Button) findViewById(R.id.search1);
+
 
         mResponseButton.setOnClickListener(new MyClickListener());
         mLoginButton.setOnClickListener(new MyClickListener());
         mLaunchButton.setOnClickListener(new MyClickListener());
+        mSearchCheckins.setOnClickListener(new MyClickListener());
+        mSearchMyLaunch.setOnClickListener(new MyClickListener());
+
 
         MyUser bmobUser = BmobUser.getCurrentUser(getApplicationContext(), MyUser.class);
         if (bmobUser == null) {
@@ -88,6 +97,16 @@ public class MainActivity extends Activity {
                     intent.setClass(getApplicationContext(), SignInActivity.class);
                     MainActivity.this.startActivity(intent);
                     MainActivity.this.finish();
+                    break;
+                case R.id.search1:
+                    intent.setClass(getApplicationContext(), SearchLaunchActivity.class);
+                    startActivity(intent);
+                    finish();
+                    break;
+                case R.id.search2:
+                    intent.setClass(getApplicationContext(), SearchCheckinsActivity.class);
+                    startActivity(intent);
+                    finish();
                     break;
                 default:
                     break;

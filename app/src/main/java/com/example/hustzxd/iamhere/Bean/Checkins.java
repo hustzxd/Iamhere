@@ -10,6 +10,7 @@ public class Checkins extends BmobObject {
     private String randomCode;
     private String stuName;
     private String stuNumber;
+
     private String date;
 
     public String getRandomCode() {
@@ -42,5 +43,15 @@ public class Checkins extends BmobObject {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        return "Checkins{" +
+                "randomCode='" + randomCode + '\'' +
+                ", stuName='" + stuName + '\'' +
+                ", stuNumber='" + stuNumber + '\'' +
+                ", date='" + date + '\'' +
+                '}';
     }
 }
