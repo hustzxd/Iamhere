@@ -3,49 +3,217 @@
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:orientation="vertical">
-
-    <!--<LinearLayout-->
-        <!--android:id="@+id/top_head_container"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="50dip"-->
-        <!--android:background="@color/colorPrimaryDark"-->
-        <!--android:orientation="horizontal">-->
-
-        <!--<me.drakeet.uiview.UIImageView-->
-            <!--android:id="@+id/back_button"-->
-            <!--android:layout_width="40dip"-->
-            <!--android:layout_height="40dip"-->
-            <!--android:layout_marginTop="5dip"-->
-            <!--android:background="@android:drawable/ic_menu_revert"/>-->
-
-    <!--</LinearLayout>-->
-
+              android:divider="@drawable/line"
+              android:orientation="vertical"
+              android:showDividers="middle">
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_margin="@dimen/ui_radius"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:divider="@drawable/line"
+        android:orientation="vertical"
+        android:showDividers="middle">
+        <RelativeLayout
+            android:id="@+id/head_portraits"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="@dimen/ui_radius"
+            android:background="@drawable/click_bg"
+            android:clickable="true"
+            android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="头像"
-            android:textStyle="bold"
-            />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_margin="10dp"
+                android:text="头像"
+                android:textStyle="bold"
+                />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/avatar"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/nick_name_ly"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="@dimen/ui_radius"
+            android:background="@drawable/click_bg"
+            android:clickable="true"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_margin="10dp"
+                android:text="昵称"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/nick_name_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="40dp"
+                android:text="昵称"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/stu_name"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="@dimen/ui_radius"
+            android:background="@drawable/click_bg"
+            android:clickable="true"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_margin="10dp"
+                android:text="姓名"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/stu_name_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="40dp"
+                android:text="姓名"
+                />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/stu_sex_ly"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="@dimen/ui_radius"
+            android:background="@drawable/click_bg"
+            android:clickable="true"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_margin="10dp"
+                android:text="性别"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/stu_sex_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="40dp"
+                android:text="男"
+                />
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/stu_number_ly"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="@dimen/ui_radius"
+            android:background="@drawable/click_bg"
+            android:clickable="true"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_margin="10dp"
+                android:text="学号"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/stu_number_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="40dp"
+                android:text="U201315Xxx"
+                />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/personalized_signature"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="@dimen/ui_radius"
+            android:background="@drawable/click_bg"
+            android:clickable="true"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_margin="10dp"
+                android:text="签名"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/signature_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="40dp"
+                android:text=":("
+                />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/logout_ly"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="@dimen/ui_radius"
+            android:background="@drawable/click_bg"
+            android:clickable="true"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="退 出 登 录"
+                android:textColor="@color/mediumvioletred"
+                android:textSize="18sp"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></RelativeLayout>
     </LinearLayout>
+</ScrollView>
 
-    <me.drakeet.uiview.UIButton
-        android:id="@+id/logout_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:alpha="20"
-        android:textColor="@color/red"
-        android:text="退出登录"
-        app:alpha_pressed="100"
-        />
 
 </LinearLayout>

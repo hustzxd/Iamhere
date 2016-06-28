@@ -114,10 +114,11 @@ public class RegisterActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent();
-        intent.setClass(getApplicationContext(), MainActivity.class);
-        RegisterActivity.this.startActivity(intent);
-        RegisterActivity.this.finish();
+        Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+        startActivityForResult(intent, 0);
+        overridePendingTransition(R.anim.push_right_in,
+                R.anim.push_right_out);
+        this.finish();
     }
 
     private void toast(String s) {

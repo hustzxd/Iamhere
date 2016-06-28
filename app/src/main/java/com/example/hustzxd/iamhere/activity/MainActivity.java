@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -20,6 +21,8 @@ import me.drakeet.uiview.UIImageView;
 /**
  * main activity
  * Created by buxiaoyao on 2016/6/4.
+ * 程序主界面，Bmob组件的初始化
+ * 主界面显示所有的功能入口
  */
 public class MainActivity extends Activity {
     private UIImageView mUserButton;
@@ -51,8 +54,8 @@ public class MainActivity extends Activity {
         mSearchMyLaunch = (Button) findViewById(R.id.search1);
 
 
-        mResponseButton.setOnClickListener(new MyClickListener());
         mLoginButton.setOnClickListener(new MyClickListener());
+        mResponseButton.setOnClickListener(new MyClickListener());
         mLaunchButton.setOnClickListener(new MyClickListener());
         mSearchCheckins.setOnClickListener(new MyClickListener());
         mSearchMyLaunch.setOnClickListener(new MyClickListener());
@@ -76,42 +79,76 @@ public class MainActivity extends Activity {
 
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent();
+            if(v.getId() == R.id.login_button){
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivityForResult(intent, 0);
+                overridePendingTransition(R.anim.push_left_in,
+                        R.anim.push_left_out);
+                return;
+            }
+            MyUser bmobUser = BmobUser.getCurrentUser(getApplicationContext(), MyUser.class);
+            if (bmobUser == null) {
+                toast("请先登录");
+                return;
+            }
+            Intent intent;
             switch (v.getId()) {
                 case R.id.userpic:
-                    intent.setClass(getApplicationContext(), PersonalInfoActivity.class);
-                    MainActivity.this.startActivity(intent);
-                    MainActivity.this.finish();
-                    break;
-                case R.id.login_button:
-                    intent.setClass(getApplicationContext(), LoginActivity.class);
-                    MainActivity.this.startActivity(intent);
+                    intent = new Intent(MainActivity.this, PersonalInfoActivity.class);
+                    startActivityForResult(intent, 0);
+                    overridePendingTransition(R.anim.push_left_in,
+                            R.anim.push_left_out);
                     MainActivity.this.finish();
                     break;
                 case R.id.launch:
-                    intent.setClass(getApplicationContext(), LaunchActivity.class);
-                    MainActivity.this.startActivity(intent);
+                    intent = new Intent(MainActivity.this, LaunchActivity.class);
+                    startActivityForResult(intent, 0);
+                    overridePendingTransition(R.anim.push_left_in,
+                            R.anim.push_left_out);
                     MainActivity.this.finish();
                     break;
                 case R.id.response:
-                    intent.setClass(getApplicationContext(), SignInActivity.class);
-                    MainActivity.this.startActivity(intent);
+                    intent = new Intent(MainActivity.this, SignInActivity.class);
+                    startActivityForResult(intent, 0);
+                    overridePendingTransition(R.anim.push_left_in,
+                            R.anim.push_left_out);
                     MainActivity.this.finish();
                     break;
                 case R.id.search1:
-                    intent.setClass(getApplicationContext(), SearchLaunchActivity.class);
-                    startActivity(intent);
-                    finish();
+                    intent = new Intent(MainActivity.this, SearchLaunchActivity.class);
+                    startActivityForResult(intent, 0);
+                    overridePendingTransition(R.anim.push_left_in,
+                            R.anim.push_left_out);
+                    MainActivity.this.finish();
                     break;
                 case R.id.search2:
-                    intent.setClass(getApplicationContext(), SearchCheckinsActivity.class);
-                    startActivity(intent);
-                    finish();
+                    intent = new Intent(MainActivity.this, SearchCheckinsActivity.class);
+                    startActivityForResult(intent, 0);
+                    overridePendingTransition(R.anim.push_left_in,
+                            R.anim.push_left_out);
+                    MainActivity.this.finish();
                     break;
                 default:
                     break;
             }
         }
+    }
+
+    private long exitTime = 0;
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+            if ((System.currentTimeMillis() - exitTime) > 2000) {
+                Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                exitTime = System.currentTimeMillis();
+            } else {
+                finish();
+                System.exit(0);
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     private void toast(String s) {

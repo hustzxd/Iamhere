@@ -1,6 +1,8 @@
 package com.example.hustzxd.iamhere.activity;
 
 import android.content.Intent;
+import android.net.wifi.ScanResult;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -18,6 +20,7 @@ import com.example.hustzxd.iamhere.R;
 import com.example.hustzxd.iamhere.myUtils.MyUtils;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
@@ -34,6 +37,9 @@ public class SignInActivity extends AppCompatActivity {
     private TextView mCourseInfoView;
     private EditText mRandomCodeView;
 
+    private WifiManager mWifiManager;
+    List<LaunchSignInTable> mResults;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +52,8 @@ public class SignInActivity extends AppCompatActivity {
 
         mObtainCourseInfoButton.setOnClickListener(new MyOnClickListener());
         mConfirmSignInButton.setOnClickListener(new MyOnClickListener());
+
+        mWifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
     }
 
     private class MyOnClickListener implements View.OnClickListener {
@@ -70,9 +78,9 @@ public class SignInActivity extends AppCompatActivity {
                                 public void done(BmobQueryResult<LaunchSignInTable> bmobQueryResult,
                                                  BmobException e) {
                                     if (e == null) {
-                                        List<LaunchSignInTable> results = bmobQueryResult.getResults();
-                                        mCourseInfoView.setText(results.toString());
-                                        Log.i("result", results.toString());
+                                        mResults = bmobQueryResult.getResults();
+                                        mCourseInfoView.setText(mResults.toString());
+                                        Log.i("result", mResults.toString());
                                     } else {
                                         MyUtils.toast(getApplicationContext(), e.getMessage());
                                     }
@@ -80,6 +88,25 @@ public class SignInActivity extends AppCompatActivity {
                             });
                     break;
                 case R.id.confirm_sign_in:
+                    Boolean isRightPosition = false;
+                    List<String> BSSIDs = new ArrayList<>();
+                    mWifiManager.startScan();
+                    try {
+                        Thread.sleep(1500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    List<ScanResult> scanResults = mWifiManager.getScanResults();
+                    for (ScanResult scanResult : scanResults) {
+                        BSSIDs.add(scanResult.BSSID);
+                        mResults.get(0).getWifiBSSIDs().contains(scanResult.BSSID);
+                        isRightPosition = true;
+                    }
+
+                    if(!isRightPosition){
+                        MyUtils.toast(getApplicationContext(),"定位地点与发起签到地点不符合");
+                        return;
+                    }
                     Checkins checkin = new Checkins();
                     checkin.setRandomCode(randomCode);
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm E");
@@ -91,7 +118,7 @@ public class SignInActivity extends AppCompatActivity {
                     checkin.save(getApplicationContext(), new SaveListener() {
                         @Override
                         public void onSuccess() {
-                            MyUtils.toast(getApplicationContext(), "success");
+                            MyUtils.toast(getApplicationContext(), "签到成功");
                         }
 
                         @Override
@@ -117,9 +144,10 @@ public class SignInActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent();
-        intent.setClass(getApplicationContext(), MainActivity.class);
-        SignInActivity.this.startActivity(intent);
-        SignInActivity.this.finish();
+        Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+        startActivityForResult(intent, 0);
+        overridePendingTransition(R.anim.push_right_in,
+                R.anim.push_right_out);
+        this.finish();
     }
 }

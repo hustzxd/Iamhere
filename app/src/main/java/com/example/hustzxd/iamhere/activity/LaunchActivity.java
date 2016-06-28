@@ -1,6 +1,8 @@
 package com.example.hustzxd.iamhere.activity;
 
 import android.content.Intent;
+import android.net.wifi.ScanResult;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -17,6 +19,8 @@ import com.example.hustzxd.iamhere.R;
 import com.example.hustzxd.iamhere.myUtils.MyUtils;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.listener.SaveListener;
@@ -30,6 +34,8 @@ public class LaunchActivity extends AppCompatActivity {
     private Button mAcquireRandomCodeButton;
     private TextView mRandomCodeView;
     private Button mBackToMainButton;
+
+    private WifiManager mWifiManager;
 
     @Override
 
@@ -50,6 +56,7 @@ public class LaunchActivity extends AppCompatActivity {
         mLaunchSignInButton.setOnClickListener(new MyOnClickListener());
         mAcquireRandomCodeButton.setOnClickListener(new MyOnClickListener());
 
+        mWifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
         /**
          * 初始化发起人姓名，和发起时间
          */
@@ -85,12 +92,32 @@ public class LaunchActivity extends AppCompatActivity {
                         toast("请先获取随机码");
                         return;
                     }
+
+
                     LaunchSignInTable signInTable = new LaunchSignInTable();
                     signInTable.setName(mLaunchPersonNameView.getText().toString());
                     signInTable.setDate(mLaunchTimeView.getText().toString());
                     signInTable.setPositive(mPositionView.getText().toString());
                     signInTable.setCourseName(mCourseNameView.getText().toString());
                     signInTable.setRandomCode(mRandomCodeView.getText().toString());
+
+                    //获取当前位置的SSID信息，便于位置的确认
+                    List<String> BSSIDs = new ArrayList<>();
+                    if (!mWifiManager.isWifiEnabled()) {
+                        mWifiManager.setWifiEnabled(true);
+                        return;
+                    }
+                    mWifiManager.startScan();
+                    try {
+                        Thread.sleep(1500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    List<ScanResult> scanResults = mWifiManager.getScanResults();
+                    for (ScanResult scanResult : scanResults) {
+                        BSSIDs.add(scanResult.BSSID);
+                    }
+                    signInTable.setWifiBSSIDs(BSSIDs);
                     signInTable.save(getApplicationContext(), new SaveListener() {
                         @Override
                         public void onSuccess() {
@@ -132,9 +159,10 @@ public class LaunchActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent();
-        intent.setClass(getApplicationContext(), MainActivity.class);
-        LaunchActivity.this.startActivity(intent);
-        LaunchActivity.this.finish();
+        Intent intent = new Intent(LaunchActivity.this, MainActivity.class);
+        startActivityForResult(intent, 0);
+        overridePendingTransition(R.anim.push_right_in,
+                R.anim.push_right_out);
+        this.finish();
     }
 }

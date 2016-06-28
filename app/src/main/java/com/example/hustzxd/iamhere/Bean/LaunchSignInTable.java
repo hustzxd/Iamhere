@@ -1,5 +1,7 @@
 package com.example.hustzxd.iamhere.Bean;
 
+import java.util.List;
+
 import cn.bmob.v3.BmobObject;
 
 /**
@@ -12,6 +14,15 @@ public class LaunchSignInTable extends BmobObject {
     private String positive;
     private String courseName;
     private String randomCode;
+    private List<String> wifiBSSIDs;
+
+    public List<String> getWifiBSSIDs() {
+        return wifiBSSIDs;
+    }
+
+    public void setWifiBSSIDs(List<String> wifiBSSIDs) {
+        this.wifiBSSIDs = wifiBSSIDs;
+    }
 
     public String getName() {
         return name;
@@ -61,6 +72,7 @@ public class LaunchSignInTable extends BmobObject {
                 ", positive='" + positive + '\'' +
                 ", courseName='" + courseName + '\'' +
                 ", randomCode='" + randomCode + '\'' +
+                ", wifiBSSIDs=" + wifiBSSIDs +
                 '}';
     }
 }

@@ -1,4 +1,4 @@
-package com.example.hustzxd.iamhere.activity;
+package com.example.hustzxd.iamhere;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,11 +8,9 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.hustzxd.iamhere.Bean.Checkins;
-import com.example.hustzxd.iamhere.Bean.MyUser;
-import com.example.hustzxd.iamhere.R;
+import com.example.hustzxd.iamhere.activity.SearchLaunchActivity;
 import com.example.hustzxd.iamhere.myUtils.MyUtils;
 import com.quentindommerc.superlistview.SuperListview;
 import com.quentindommerc.superlistview.SwipeDismissListViewTouchListener;
@@ -21,12 +19,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobQueryResult;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SQLQueryListener;
 
-public class SearchCheckinsActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class ShowSigninActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+
+    private String randomCode;
 
     private SuperListview mSuperListview;
     private ArrayAdapter<String> mAdapter;
@@ -34,7 +33,12 @@ public class SearchCheckinsActivity extends AppCompatActivity implements SwipeRe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_checkins);
+        setContentView(R.layout.activity_show_signin);
+        Intent intent = getIntent();
+        randomCode = intent.getStringExtra("randomCode");
+        MyUtils.toast(getApplicationContext(), randomCode);
+
+
 
         // Empty list view demo, just pull to add more items
         ArrayList<String> lst = new ArrayList<String>();
@@ -65,11 +69,10 @@ public class SearchCheckinsActivity extends AppCompatActivity implements SwipeRe
         InfoList();
     }
 
+
     private void InfoList() {
         mAdapter.clear();
-        MyUser bmobUser = BmobUser.getCurrentUser(getApplicationContext(), MyUser.class);
-        String name = bmobUser.getStuName();
-        String bql = "select * from Checkins where stuName = '" + name + "'";
+        String bql = "select * from Checkins where randomCode = '" + randomCode + "'";
         Log.i("sss", bql);
         new BmobQuery<Checkins>().doSQLQuery(getApplicationContext(), bql, new SQLQueryListener<Checkins>() {
 
@@ -94,7 +97,6 @@ public class SearchCheckinsActivity extends AppCompatActivity implements SwipeRe
         });
     }
 
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
@@ -106,7 +108,7 @@ public class SearchCheckinsActivity extends AppCompatActivity implements SwipeRe
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(SearchCheckinsActivity.this, MainActivity.class);
+        Intent intent = new Intent(ShowSigninActivity.this, SearchLaunchActivity.class);
         startActivityForResult(intent, 0);
         overridePendingTransition(R.anim.push_right_in,
                 R.anim.push_right_out);
@@ -115,7 +117,6 @@ public class SearchCheckinsActivity extends AppCompatActivity implements SwipeRe
 
     @Override
     public void onRefresh() {
-        Toast.makeText(this, "Refresh", Toast.LENGTH_LONG).show();
         InfoList();
     }
 }

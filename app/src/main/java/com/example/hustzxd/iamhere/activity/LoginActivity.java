@@ -83,10 +83,10 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent();
-        intent.setClass(getApplicationContext(), MainActivity.class);
-        LoginActivity.this.startActivity(intent);
-        LoginActivity.this.finish();
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivityForResult(intent, 0);
+        overridePendingTransition(R.anim.push_right_in,
+                R.anim.push_right_out);
     }
 
     private void attemptLogin() {

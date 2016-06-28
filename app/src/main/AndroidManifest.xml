@@ -36,7 +36,7 @@
         </activity>
         <activity
             android:name=".activity.LoginActivity"
-            android:label="login">
+            android:label="登录界面">
         </activity>
         <activity
             android:name=".activity.PersonalInfoActivity"
@@ -44,17 +44,27 @@
         </activity>
         <activity
             android:name=".activity.RegisterActivity"
-            android:label="register">
+            android:label="注册界面">
         </activity>
         <activity
             android:name=".activity.LaunchActivity"
             android:label="发起签到">
         </activity>
-        <activity android:name=".activity.SignInActivity">
+        <activity
+            android:name=".activity.SignInActivity"
+            android:label="我要签到">
         </activity>
-        <activity android:name=".activity.SearchLaunchActivity">
+        <activity
+            android:name=".activity.SearchLaunchActivity"
+            android:label="我发起的签到">
         </activity>
-        <activity android:name=".activity.SearchCheckinsActivity">
+        <activity
+            android:name=".activity.SearchCheckinsActivity"
+            android:label="我的签到记录">
+        </activity>
+        <activity
+            android:name=".ShowSigninActivity"
+            android:label="签到记录统计">
         </activity>
     </application>
 

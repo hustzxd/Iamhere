@@ -4,13 +4,38 @@ import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 
 /**
+ * 用户信息Bean
  * Created by Administrator on 2016/6/4.
  */
 public class MyUser extends BmobUser {
     private String stuNo;
+    private String nickName;
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
     private String stuName;
     private String personalizedSignature;
+    private String sex;
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
     private BmobFile userPic;
+
+    public MyUser() {
+        personalizedSignature = ":)";
+    }
 
     public String getStuNo() {
         return stuNo;

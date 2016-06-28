@@ -8,7 +8,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0pt"
-        android:layout_weight="4"
+        android:layout_weight="5"
         android:background="@drawable/background">
 
         <me.drakeet.uiview.UIImageView
@@ -57,7 +57,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="6"
+        android:layout_weight="5"
         android:orientation="vertical">
 
         <Button

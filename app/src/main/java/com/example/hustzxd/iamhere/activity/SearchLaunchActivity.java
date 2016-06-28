@@ -1,26 +1,24 @@
 package com.example.hustzxd.iamhere.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import com.example.hustzxd.iamhere.Bean.Checkins;
 import com.example.hustzxd.iamhere.Bean.LaunchSignInTable;
 import com.example.hustzxd.iamhere.Bean.MyUser;
 import com.example.hustzxd.iamhere.R;
+import com.example.hustzxd.iamhere.ShowSigninActivity;
 import com.example.hustzxd.iamhere.myUtils.MyUtils;
 import com.quentindommerc.superlistview.SuperListview;
 import com.quentindommerc.superlistview.SwipeDismissListViewTouchListener;
 
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +32,7 @@ public class SearchLaunchActivity extends AppCompatActivity implements SwipeRefr
 
     private SuperListview mSuperListview;
     private ArrayAdapter<String> mAdapter;
+    private List<LaunchSignInTable> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +66,15 @@ public class SearchLaunchActivity extends AppCompatActivity implements SwipeRefr
         mSuperListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                MyUtils.toast(getApplicationContext(), "position=" + position);
+//                MyUtils.toast(getApplicationContext(), "position=" + position);
+                //跳转到本次签到的统计界面
+                //获取本次签到的随机码，根据随机码来查找签到的人员
+                MyUtils.toast(getApplicationContext(),list.get(position).toString());
+                Intent intent = new Intent(SearchLaunchActivity.this, ShowSigninActivity.class);
+                intent.putExtra("randomCode","2883");
+                startActivityForResult(intent, 0);
+                overridePendingTransition(R.anim.push_left_in,
+                        R.anim.push_left_out);
             }
         });
         InfoList();
@@ -85,7 +92,7 @@ public class SearchLaunchActivity extends AppCompatActivity implements SwipeRefr
                     @Override
                     public void done(BmobQueryResult<LaunchSignInTable> result, BmobException e) {
                         if (e == null) {
-                            List<LaunchSignInTable> list = (List<LaunchSignInTable>) result.getResults();
+                            list = (List<LaunchSignInTable>) result.getResults();
                             if (list != null && list.size() > 0) {
                                 Log.i("sss", list.toString());
                                 for (LaunchSignInTable c : list) {
@@ -114,10 +121,11 @@ public class SearchLaunchActivity extends AppCompatActivity implements SwipeRefr
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent();
-        intent.setClass(getApplicationContext(), MainActivity.class);
-        SearchLaunchActivity.this.startActivity(intent);
-        SearchLaunchActivity.this.finish();
+        Intent intent = new Intent(SearchLaunchActivity.this, MainActivity.class);
+        startActivityForResult(intent, 0);
+        overridePendingTransition(R.anim.push_right_in,
+                R.anim.push_right_out);
+        this.finish();
     }
 
     @Override
