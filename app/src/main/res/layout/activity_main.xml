@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="0pt"
         android:layout_weight="5"
-        android:background="@drawable/background">
+        android:background="@color/colorPrimary">
 
         <me.drakeet.uiview.UIImageView
             android:id="@+id/userpic"
@@ -58,30 +58,90 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="5"
-        android:orientation="vertical">
+        android:divider="@drawable/line"
+        android:orientation="vertical"
+        android:showDividers="middle">
 
-        <Button
-            android:id="@+id/launch"
+        <RelativeLayout
+            android:id="@+id/ly_launch"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="发起签到"/>
+            android:layout_height="50dp"
+            android:layout_margin="@dimen/ui_radius"
+            android:background="@drawable/click_bg"
+            android:clickable="true"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/response"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="我要签到"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text=" 发起签到 "
+                android:textSize="18sp"
+                />
 
-        <Button
-            android:id="@+id/search1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="我发起的签到"/>
+        </RelativeLayout>
 
-        <Button
-            android:id="@+id/search2"
+        <RelativeLayout
+            android:id="@+id/ly_response"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="我的签到记录"/>
+            android:layout_height="50dp"
+            android:layout_margin="@dimen/ui_radius"
+            android:background="@drawable/click_bg"
+            android:clickable="true"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text=" 我要签到 "
+                android:textSize="18sp"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/ly_search1"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="@dimen/ui_radius"
+            android:background="@drawable/click_bg"
+            android:clickable="true"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text=" 我发起的签到 "
+                android:textSize="18sp"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/ly_search2"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="@dimen/ui_radius"
+            android:background="@drawable/click_bg"
+            android:clickable="true"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text=" 我的签到记录 "
+                android:textSize="18sp"
+                />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></LinearLayout>
+
+
     </LinearLayout>
 </LinearLayout>

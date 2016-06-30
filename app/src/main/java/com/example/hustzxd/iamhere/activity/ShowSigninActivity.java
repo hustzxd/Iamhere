@@ -1,4 +1,4 @@
-package com.example.hustzxd.iamhere;
+package com.example.hustzxd.iamhere.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.hustzxd.iamhere.Bean.Checkins;
-import com.example.hustzxd.iamhere.activity.SearchLaunchActivity;
+import com.example.hustzxd.iamhere.R;
+import com.example.hustzxd.iamhere.adapter.MyAdapter3;
 import com.example.hustzxd.iamhere.myUtils.MyUtils;
 import com.quentindommerc.superlistview.SuperListview;
 import com.quentindommerc.superlistview.SwipeDismissListViewTouchListener;
@@ -30,13 +31,14 @@ public class ShowSigninActivity extends AppCompatActivity implements SwipeRefres
     private SuperListview mSuperListview;
     private ArrayAdapter<String> mAdapter;
 
+    private MyAdapter3 mMyAdapter3;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_signin);
         Intent intent = getIntent();
         randomCode = intent.getStringExtra("randomCode");
-        MyUtils.toast(getApplicationContext(), randomCode);
+//        MyUtils.toast(getApplicationContext(), randomCode);
 
 
 
@@ -72,7 +74,7 @@ public class ShowSigninActivity extends AppCompatActivity implements SwipeRefres
 
     private void InfoList() {
         mAdapter.clear();
-        String bql = "select * from Checkins where randomCode = '" + randomCode + "'";
+        String bql = "select * from Checkins where randomCode = '" + randomCode + "' ordered by stuNumber";
         Log.i("sss", bql);
         new BmobQuery<Checkins>().doSQLQuery(getApplicationContext(), bql, new SQLQueryListener<Checkins>() {
 
@@ -85,9 +87,12 @@ public class ShowSigninActivity extends AppCompatActivity implements SwipeRefres
                         for (Checkins c : list) {
                             mAdapter.add(c.toString());
                         }
-                        mSuperListview.setAdapter(mAdapter);
+                        mMyAdapter3 = new MyAdapter3(getApplicationContext(),list);
+                        mSuperListview.setAdapter(mMyAdapter3);
+//                        mSuperListview.setAdapter(mAdapter);
                     } else {
-                        Log.i("smile", "查询成功，无数据返回");
+                        MyUtils.toast(getApplicationContext(),"查询成功，无数据返回");
+                        onBackPressed();
                     }
                 } else {
                     Log.i("smile", "错误码：" + e.getErrorCode() + "，错误描述：" + e.getMessage());

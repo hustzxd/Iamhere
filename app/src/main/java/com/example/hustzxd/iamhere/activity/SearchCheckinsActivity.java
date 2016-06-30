@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.example.hustzxd.iamhere.Bean.Checkins;
 import com.example.hustzxd.iamhere.Bean.MyUser;
 import com.example.hustzxd.iamhere.R;
+import com.example.hustzxd.iamhere.adapter.MyAdapter;
 import com.example.hustzxd.iamhere.myUtils.MyUtils;
 import com.quentindommerc.superlistview.SuperListview;
 import com.quentindommerc.superlistview.SwipeDismissListViewTouchListener;
@@ -31,10 +32,13 @@ public class SearchCheckinsActivity extends AppCompatActivity implements SwipeRe
     private SuperListview mSuperListview;
     private ArrayAdapter<String> mAdapter;
 
+    private MyAdapter mMyAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_checkins);
+
+
 
         // Empty list view demo, just pull to add more items
         ArrayList<String> lst = new ArrayList<String>();
@@ -68,8 +72,8 @@ public class SearchCheckinsActivity extends AppCompatActivity implements SwipeRe
     private void InfoList() {
         mAdapter.clear();
         MyUser bmobUser = BmobUser.getCurrentUser(getApplicationContext(), MyUser.class);
-        String name = bmobUser.getStuName();
-        String bql = "select * from Checkins where stuName = '" + name + "'";
+        String stuNumber = bmobUser.getStuNo();
+        String bql = "select * from Checkins where stuNumber = '" + stuNumber + "' ordered by createdAt desc";
         Log.i("sss", bql);
         new BmobQuery<Checkins>().doSQLQuery(getApplicationContext(), bql, new SQLQueryListener<Checkins>() {
 
@@ -82,7 +86,9 @@ public class SearchCheckinsActivity extends AppCompatActivity implements SwipeRe
                         for (Checkins c : list) {
                             mAdapter.add(c.toString());
                         }
-                        mSuperListview.setAdapter(mAdapter);
+                        mMyAdapter  = new MyAdapter(getApplicationContext(),list);
+//                        mSuperListview.setAdapter(mAdapter);
+                        mSuperListview.setAdapter(mMyAdapter);
                     } else {
                         Log.i("smile", "查询成功，无数据返回");
                     }
@@ -118,4 +124,5 @@ public class SearchCheckinsActivity extends AppCompatActivity implements SwipeRe
         Toast.makeText(this, "Refresh", Toast.LENGTH_LONG).show();
         InfoList();
     }
+
 }

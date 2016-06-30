@@ -11,6 +11,7 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +29,9 @@ public class LoginActivity extends AppCompatActivity {
     // UI references.
     private EditText mPasswordView;
     private EditText mUsernameView;
-    private Button mToRegisterButton;
+
+    private RelativeLayout mLoginView;
+    private RelativeLayout mRegisterView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,23 +53,29 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        assert mEmailSignInButton != null;
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
+        mLoginView = (RelativeLayout) findViewById(R.id.ly_sign_in);
+
+        mLoginView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 attemptLogin();
             }
         });
         mUsernameView = (EditText) findViewById(R.id.username);
-        mToRegisterButton = (Button) findViewById(R.id.to_register_button);
-        mToRegisterButton.setOnClickListener(new OnClickListener() {
+        String username = getIntent().getStringExtra("username_back");
+        if (!TextUtils.isEmpty(username)) {
+            mUsernameView.setText(username);
+        }
+
+        mRegisterView = (RelativeLayout) findViewById(R.id.ly_register);
+        mRegisterView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 intent.putExtra("username", mUsernameView.getText().toString());
-                intent.setClass(getApplicationContext(), RegisterActivity.class);
-                LoginActivity.this.startActivity(intent);
+                startActivityForResult(intent, 0);
+                overridePendingTransition(R.anim.push_left_in,
+                        R.anim.push_left_out);
                 LoginActivity.this.finish();
             }
         });
@@ -87,6 +96,7 @@ public class LoginActivity extends AppCompatActivity {
         startActivityForResult(intent, 0);
         overridePendingTransition(R.anim.push_right_in,
                 R.anim.push_right_out);
+        this.finish();
     }
 
     private void attemptLogin() {
@@ -100,12 +110,18 @@ public class LoginActivity extends AppCompatActivity {
             mPasswordView.setError("Password is too short!");
             return;
         }
-        BmobUser bmobUser = new BmobUser();
+        final BmobUser bmobUser = new BmobUser();
         bmobUser.setUsername(username);
         bmobUser.setPassword(password);
+
         bmobUser.login(getApplicationContext(), new SaveListener() {
             @Override
             public void onSuccess() {
+                if(!bmobUser.getEmailVerified()){
+                    toast("请先认证邮箱");
+                    BmobUser.logOut(getApplicationContext());
+                    return;
+                }
                 toast("Login successfully!");
                 onBackPressed();
             }
@@ -124,7 +140,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.length() > 1;
     }
 
 }

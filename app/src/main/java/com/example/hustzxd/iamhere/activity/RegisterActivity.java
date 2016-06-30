@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.hustzxd.iamhere.Bean.MyUser;
@@ -16,6 +18,7 @@ import com.example.hustzxd.iamhere.R;
 import cn.bmob.v3.listener.SaveListener;
 
 /**
+ * 用户注册主界面
  * Created by Administrator on 2016/6/4.
  */
 public class RegisterActivity extends AppCompatActivity {
@@ -26,7 +29,8 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText mEmailView;
     private EditText mStuNoView;
     private EditText mStuNameView;
-    private Button mRegisterButton;
+
+    private RelativeLayout mRegisterView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,14 +43,13 @@ public class RegisterActivity extends AppCompatActivity {
         mEmailView = (EditText) findViewById(R.id.email);
         mStuNoView = (EditText) findViewById(R.id.stu_number);
         mStuNameView = (EditText) findViewById(R.id.stu_name);
-        mRegisterButton = (Button) findViewById(R.id.register_button);
-
+        mRegisterView = (RelativeLayout) findViewById(R.id.ly_register);
 
         String username = getIntent().getStringExtra("username");
         mUsernameView.setText(username);
 
 
-        mRegisterButton.setOnClickListener(new View.OnClickListener() {
+        mRegisterView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String username = mUsernameView.getText().toString();
@@ -86,6 +89,9 @@ public class RegisterActivity extends AppCompatActivity {
                 myUser.setPassword(password);
                 myUser.setEmail(email);
                 myUser.setStuNo(stuNo);
+                myUser.setSex("男");
+//                myUser.setUserPic(null);
+
                 myUser.setStuName(stuName);
                 myUser.signUp(getApplicationContext(), new SaveListener() {
                     @Override
@@ -93,9 +99,9 @@ public class RegisterActivity extends AppCompatActivity {
                         toast("register successfully");
                         onBackPressed();
                     }
-
                     @Override
                     public void onFailure(int i, String s) {
+                        Log.e("sss",s);
                         toast(s);
                     }
                 });
@@ -114,7 +120,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+        intent.putExtra("username_back",mUsernameView.getText().toString());
         startActivityForResult(intent, 0);
         overridePendingTransition(R.anim.push_right_in,
                 R.anim.push_right_out);

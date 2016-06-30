@@ -10,11 +10,21 @@ import cn.bmob.v3.BmobObject;
  */
 public class LaunchSignInTable extends BmobObject {
     private String name;
-    private String date;
+
+    public String getUserObjectId() {
+        return userObjectId;
+    }
+
+    public void setUserObjectId(String userObjectId) {
+        this.userObjectId = userObjectId;
+    }
+
+    private String userObjectId;
     private String positive;
     private String courseName;
     private String randomCode;
     private List<String> wifiBSSIDs;
+
 
     public List<String> getWifiBSSIDs() {
         return wifiBSSIDs;
@@ -32,13 +42,6 @@ public class LaunchSignInTable extends BmobObject {
         this.name = name;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
 
     public String getPositive() {
         return positive;
@@ -68,7 +71,6 @@ public class LaunchSignInTable extends BmobObject {
     public String toString() {
         return "LaunchSignInTable{" +
                 "name='" + name + '\'' +
-                ", date='" + date + '\'' +
                 ", positive='" + positive + '\'' +
                 ", courseName='" + courseName + '\'' +
                 ", randomCode='" + randomCode + '\'' +

@@ -7,11 +7,33 @@ import cn.bmob.v3.BmobObject;
  * Created by buxiaoyao on 2016/6/7.
  */
 public class Checkins extends BmobObject {
+
+    private String stuObjectId;
+
     private String randomCode;
-    private String stuName;
+
+    private String courseName;
+
     private String stuNumber;
 
-    private String date;
+    private String stuName;
+
+    public String getStuObjectId() {
+        return stuObjectId;
+    }
+
+    public void setStuObjectId(String stuObjectId) {
+        this.stuObjectId = stuObjectId;
+    }
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
 
     public String getRandomCode() {
         return randomCode;
@@ -37,21 +59,13 @@ public class Checkins extends BmobObject {
         this.stuNumber = stuNumber;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
     @Override
     public String toString() {
         return "Checkins{" +
                 "randomCode='" + randomCode + '\'' +
                 ", stuName='" + stuName + '\'' +
                 ", stuNumber='" + stuNumber + '\'' +
-                ", date='" + date + '\'' +
+                ", courseName='" + courseName + '\'' +
                 '}';
     }
 }

@@ -10,6 +10,31 @@ import cn.bmob.v3.datatype.BmobFile;
 public class MyUser extends BmobUser {
     private String stuNo;
     private String nickName;
+    private String stuName;
+    private String Signature;
+    private String sex;
+
+    private BmobFile userPic;
+
+    public MyUser() {
+        Signature = ":)";
+    }
+
+    public BmobFile getUserPic() {
+        return userPic;
+    }
+
+    public void setUserPic(BmobFile userPic) {
+        this.userPic = userPic;
+    }
+
+    public String getSignature() {
+        return Signature;
+    }
+
+    public void setSignature(String signature) {
+        Signature = signature;
+    }
 
     public String getNickName() {
         return nickName;
@@ -19,22 +44,12 @@ public class MyUser extends BmobUser {
         this.nickName = nickName;
     }
 
-    private String stuName;
-    private String personalizedSignature;
-    private String sex;
-
     public String getSex() {
         return sex;
     }
 
     public void setSex(String sex) {
         this.sex = sex;
-    }
-
-    private BmobFile userPic;
-
-    public MyUser() {
-        personalizedSignature = ":)";
     }
 
     public String getStuNo() {
@@ -53,19 +68,7 @@ public class MyUser extends BmobUser {
         this.stuName = stuName;
     }
 
-    public String getPersonalizedSignature() {
-        return personalizedSignature;
-    }
 
-    public void setPersonalizedSignature(String personalizedSignature) {
-        this.personalizedSignature = personalizedSignature;
-    }
 
-    public BmobFile getUserPic() {
-        return userPic;
-    }
 
-    public void setUserPic(BmobFile userPic) {
-        this.userPic = userPic;
-    }
 }

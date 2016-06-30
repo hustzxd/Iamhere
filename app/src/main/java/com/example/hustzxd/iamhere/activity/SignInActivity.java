@@ -9,8 +9,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.hustzxd.iamhere.Bean.Checkins;
@@ -32,26 +32,38 @@ import cn.bmob.v3.listener.SaveListener;
 
 public class SignInActivity extends AppCompatActivity {
 
-    private Button mObtainCourseInfoButton;
-    private Button mConfirmSignInButton;
-    private TextView mCourseInfoView;
+    private RelativeLayout mObtainCourseInfoView;
+    private RelativeLayout mConfirmSignInView;
+    private RelativeLayout mSuccessView;
     private EditText mRandomCodeView;
+    private TextView mCourseNameView;
+    private TextView mTeacherNameView;
+    private TextView mPositionView;
+    private TextView mTimeView;
 
     private WifiManager mWifiManager;
     List<LaunchSignInTable> mResults;
+    Boolean isError = false;//获取课程信息出错
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
-        mObtainCourseInfoButton = (Button) findViewById(R.id.obtain_course_info);
-        mConfirmSignInButton = (Button) findViewById(R.id.confirm_sign_in);
-        mCourseInfoView = (TextView) findViewById(R.id.course_info);
+        mObtainCourseInfoView = (RelativeLayout) findViewById(R.id.obtain_course_info);
+        mConfirmSignInView = (RelativeLayout) findViewById(R.id.confirm_sign_in);
+        mSuccessView = (RelativeLayout) findViewById(R.id.sign_in_success);
+
+        mCourseNameView = (TextView) findViewById(R.id.tv_course_name);
+        mTeacherNameView = (TextView) findViewById(R.id.tv_teacher_name);
+        mPositionView = (TextView) findViewById(R.id.tv_position);
+        mTimeView = (TextView) findViewById(R.id.tv_time);
+
         mRandomCodeView = (EditText) findViewById(R.id.random_code);
 
-        mObtainCourseInfoButton.setOnClickListener(new MyOnClickListener());
-        mConfirmSignInButton.setOnClickListener(new MyOnClickListener());
+        mObtainCourseInfoView.setOnClickListener(new MyOnClickListener());
+        mConfirmSignInView.setOnClickListener(new MyOnClickListener());
+        mSuccessView.setOnClickListener(new MyOnClickListener());
 
         mWifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
     }
@@ -62,6 +74,11 @@ public class SignInActivity extends AppCompatActivity {
             String randomCode = mRandomCodeView.getText().toString();
             switch (v.getId()) {
                 case R.id.obtain_course_info:
+                    if (!mWifiManager.isWifiEnabled()) {
+                        mWifiManager.setWifiEnabled(true);
+                        return;
+                    }
+                    mWifiManager.startScan();
                     if (TextUtils.isEmpty(randomCode)) {
                         mRandomCodeView.setError("input random code");
                         return;
@@ -79,10 +96,25 @@ public class SignInActivity extends AppCompatActivity {
                                                  BmobException e) {
                                     if (e == null) {
                                         mResults = bmobQueryResult.getResults();
-                                        mCourseInfoView.setText(mResults.toString());
                                         Log.i("result", mResults.toString());
+                                        if (mResults.size() == 0) {
+                                            //未找到随机码
+                                            MyUtils.toast(getApplicationContext(), "请输入正确的随机码！");
+                                            isError = true;
+                                        } else {
+                                            mTeacherNameView.setText(mResults.get(0).getName());
+                                            mCourseNameView.setText(mResults.get(0).getCourseName());
+                                            mPositionView.setText(mResults.get(0).getPositive());
+                                            mTimeView.setText(mResults.get(0).getUpdatedAt());
+
+                                            mWifiManager.startScan();
+                                            mObtainCourseInfoView.setVisibility(View.GONE);
+                                            mConfirmSignInView.setVisibility(View.VISIBLE);
+                                        }
                                     } else {
+                                        Log.e("sss", String.valueOf(e.getErrorCode()));
                                         MyUtils.toast(getApplicationContext(), e.getMessage());
+                                        isError = true;
                                     }
                                 }
                             });
@@ -90,35 +122,35 @@ public class SignInActivity extends AppCompatActivity {
                 case R.id.confirm_sign_in:
                     Boolean isRightPosition = false;
                     List<String> BSSIDs = new ArrayList<>();
-                    mWifiManager.startScan();
-                    try {
-                        Thread.sleep(1500);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+
+                    Log.i("BSSID", mResults.get(0).getWifiBSSIDs().toString());
                     List<ScanResult> scanResults = mWifiManager.getScanResults();
                     for (ScanResult scanResult : scanResults) {
                         BSSIDs.add(scanResult.BSSID);
-                        mResults.get(0).getWifiBSSIDs().contains(scanResult.BSSID);
-                        isRightPosition = true;
+                        if (mResults.get(0).getWifiBSSIDs().contains(scanResult.BSSID)) {
+                            isRightPosition = true;
+                        }
                     }
-
-                    if(!isRightPosition){
-                        MyUtils.toast(getApplicationContext(),"定位地点与发起签到地点不符合");
+                    Log.i("BSSID2", BSSIDs.toString());
+                    if (!isRightPosition) {
+                        MyUtils.toast(getApplicationContext(), "定位地点与发起签到地点不符合");
                         return;
                     }
                     Checkins checkin = new Checkins();
-                    checkin.setRandomCode(randomCode);
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm E");
-                    String date = sdf.format(new java.util.Date());
-                    checkin.setDate(date);
                     MyUser bmobUser = BmobUser.getCurrentUser(getApplicationContext(), MyUser.class);
+
+                    checkin.setStuObjectId(bmobUser.getObjectId());
                     checkin.setStuName(bmobUser.getStuName());
                     checkin.setStuNumber(bmobUser.getStuNo());
+                    checkin.setRandomCode(randomCode);
+                    checkin.setCourseName(mCourseNameView.getText().toString());
+
                     checkin.save(getApplicationContext(), new SaveListener() {
                         @Override
                         public void onSuccess() {
                             MyUtils.toast(getApplicationContext(), "签到成功");
+                            mConfirmSignInView.setVisibility(View.GONE);
+                            mSuccessView.setVisibility(View.VISIBLE);
                         }
 
                         @Override
@@ -126,6 +158,9 @@ public class SignInActivity extends AppCompatActivity {
                             MyUtils.toast(getApplicationContext(), s);
                         }
                     });
+                    break;
+                case R.id.sign_in_success:
+                    onBackPressed();
                     break;
                 default:
                     break;

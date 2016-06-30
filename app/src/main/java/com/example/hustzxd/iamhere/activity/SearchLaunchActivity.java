@@ -14,12 +14,14 @@ import android.widget.ListView;
 import com.example.hustzxd.iamhere.Bean.LaunchSignInTable;
 import com.example.hustzxd.iamhere.Bean.MyUser;
 import com.example.hustzxd.iamhere.R;
-import com.example.hustzxd.iamhere.ShowSigninActivity;
+import com.example.hustzxd.iamhere.adapter.MyAdapter2;
 import com.example.hustzxd.iamhere.myUtils.MyUtils;
 import com.quentindommerc.superlistview.SuperListview;
 import com.quentindommerc.superlistview.SwipeDismissListViewTouchListener;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
@@ -33,6 +35,8 @@ public class SearchLaunchActivity extends AppCompatActivity implements SwipeRefr
     private SuperListview mSuperListview;
     private ArrayAdapter<String> mAdapter;
     private List<LaunchSignInTable> list;
+
+    private MyAdapter2 mMyAdapter2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,9 +73,9 @@ public class SearchLaunchActivity extends AppCompatActivity implements SwipeRefr
 //                MyUtils.toast(getApplicationContext(), "position=" + position);
                 //跳转到本次签到的统计界面
                 //获取本次签到的随机码，根据随机码来查找签到的人员
-                MyUtils.toast(getApplicationContext(),list.get(position).toString());
+//                MyUtils.toast(getApplicationContext(),list.get(position).toString());
                 Intent intent = new Intent(SearchLaunchActivity.this, ShowSigninActivity.class);
-                intent.putExtra("randomCode","2883");
+                intent.putExtra("randomCode",list.get(position).getRandomCode());
                 startActivityForResult(intent, 0);
                 overridePendingTransition(R.anim.push_left_in,
                         R.anim.push_left_out);
@@ -84,7 +88,7 @@ public class SearchLaunchActivity extends AppCompatActivity implements SwipeRefr
         mAdapter.clear();
         MyUser bmobUser = BmobUser.getCurrentUser(getApplicationContext(), MyUser.class);
         String name = bmobUser.getStuName();
-        String bql = "select * from LaunchSignInTable where name = '" + name + "'";
+        String bql = "select * from LaunchSignInTable where name = '" + name + "' ordered by createdAt desc";
         Log.i("sss", bql);
         new BmobQuery<LaunchSignInTable>().doSQLQuery(getApplicationContext(), bql,
                 new SQLQueryListener<LaunchSignInTable>() {
@@ -98,9 +102,13 @@ public class SearchLaunchActivity extends AppCompatActivity implements SwipeRefr
                                 for (LaunchSignInTable c : list) {
                                     mAdapter.add(c.toString());
                                 }
-                                mSuperListview.setAdapter(mAdapter);
+//                                Collections.reverse(list);
+                                mMyAdapter2 = new MyAdapter2(getApplicationContext(),list);
+                                mSuperListview.setAdapter(mMyAdapter2);
                             } else {
                                 Log.i("smile", "查询成功，无数据返回");
+                                MyUtils.toast(getApplicationContext(),"我没发起过签到，返回");
+                                onBackPressed();
                             }
                         } else {
                             Log.i("smile", "错误码：" + e.getErrorCode() + "，错误描述：" + e.getMessage());
