@@ -75,10 +75,11 @@ public class SearchLaunchActivity extends AppCompatActivity implements SwipeRefr
                 //获取本次签到的随机码，根据随机码来查找签到的人员
 //                MyUtils.toast(getApplicationContext(),list.get(position).toString());
                 Intent intent = new Intent(SearchLaunchActivity.this, ShowSigninActivity.class);
-                intent.putExtra("randomCode",list.get(position).getRandomCode());
+                intent.putExtra("randomCode", list.get(position).getRandomCode());
                 startActivityForResult(intent, 0);
                 overridePendingTransition(R.anim.push_left_in,
                         R.anim.push_left_out);
+                SearchLaunchActivity.this.finish();
             }
         });
         InfoList();
@@ -103,11 +104,11 @@ public class SearchLaunchActivity extends AppCompatActivity implements SwipeRefr
                                     mAdapter.add(c.toString());
                                 }
 //                                Collections.reverse(list);
-                                mMyAdapter2 = new MyAdapter2(getApplicationContext(),list);
+                                mMyAdapter2 = new MyAdapter2(getApplicationContext(), list);
                                 mSuperListview.setAdapter(mMyAdapter2);
                             } else {
                                 Log.i("smile", "查询成功，无数据返回");
-                                MyUtils.toast(getApplicationContext(),"我没发起过签到，返回");
+                                MyUtils.toast(getApplicationContext(), "我没发起过签到，返回");
                                 onBackPressed();
                             }
                         } else {
